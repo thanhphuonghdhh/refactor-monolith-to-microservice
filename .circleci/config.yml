@@ -1,0 +1,25 @@
+# .circleci/config.yml file
+version: 2.1
+
+jobs:
+  build:            # job name
+    docker:         # executor type
+      - image: cimg/base:current # Docker image that installs Docker and has Git,
+      - image: cimg/node:12.0
+    working_directory: ~/app
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: default
+      - run: echo "dm"
+      - run:
+          name: Install dependencies
+          command: echo "No need to install anything. \n Just build and push the Docker image."
+      - run:
+          name: Build and push Docker image
+          command: |
+            echo "Inside the Build and push Docker image step"
+            docker --version # print the version for logging
+            docker build -t hesticide/sample-express-app .        
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push hesticide/sample-express-app
