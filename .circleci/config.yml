@@ -18,8 +18,17 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            echo "Inside the Build and push Docker image step"
-            docker --version # print the version for logging
-            docker build -t hesticide/sample-express-app .        
+            # Build
+            docker-compose -f docker-compose-build.yaml build --parallel
+            # Tagging
+            docker tag udagram-api-feed hesticide/udagram-api-feed:latest
+            docker tag udagram-api-user hesticide/udagram-api-user:latest
+            docker tag udagram-frontend hesticide/udagram-frontend:latest
+            docker tag reverseproxy hesticide/reverseproxy:latest
+            # Log info
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push hesticide/sample-express-app
+            # Push
+            docker push hesticide/udagram-api-feed
+            docker push hesticide/udagram-api-user
+            docker push hesticide/udagram-frontend
+            docker push hesticide/reverseproxy
