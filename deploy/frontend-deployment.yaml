@@ -16,7 +16,7 @@ spec:
         api: external        
     spec:
       containers:
-      - image: hesticide/udagram-frontend:latest
+      - image: hesticide/udagram-frontend:v3
         name: frontend
         imagePullPolicy: Always          
         ports:
